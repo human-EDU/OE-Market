@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.recyclebin.mapper.ChattingMapper">
+	<resultMap type="chatting" id="chattingMap">
+		<id property="clno" column="clno"/>
+		<result property="cno" column="cno"/>
+		<result property="userId" column="userId"/>
+		<result property="message" column="message"/>
+		<result property="unReadCount" column="unReadCount"/>
+		<result property="regDate" column="regDate"/>
+	</resultMap>
+	
+	<insert id="insertMessage">
+		INSERT INTO OE_CHATTING(CLNO, CNO, USERID, MESSAGE) VALUES(SEQ_CLNO.NEXTVAL, #{cno}, #{userId}, #{message})
+<!-- 	 	<if test="sessionCount == 1">
+		</if>
+ 		<if test="sessionCount == 2">
+			INSERT INTO OE_CHATTING(CLNO, CNO, USERID, MESSAGE, UNREADCOUNT) VALUES(SEQ_CLNO.NEXTVAL, #{cno}, #{userId}, #{message}, '0')
+		</if> -->
+	</insert>
+	
+	<select id="getMessages" resultMap="chattingMap">
+		SELECT * FROM OE_CHATTING
+		WHERE CNO = #{cno}
+		ORDER BY 1
+	</select>
+	
+	<select id="getUnReadCount" resultType="integer">
+		SELECT COUNT(*) FROM OE_CHATTING
+		WHERE CNO = #{cno} AND USERID != #{userId} AND UNREADCOUNT = 1
+	</select>
+	
+	<update id="updateCount">
+		UPDATE OE_CHATTING
+		SET UNREADCOUNT = 0
+		WHERE CNO = #{cno} AND USERID != #{userId} AND UNREADCOUNT = 1		
+	</update>
+	
+	<select id="getMessage" resultMap="chattingMap">
+		SELECT * FROM OE_CHATTING
+		WHERE CLNO = #{clno}
+	</select>
+</mapper>

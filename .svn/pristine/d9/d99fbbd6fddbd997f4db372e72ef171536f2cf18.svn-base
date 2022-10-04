@@ -1,0 +1,19 @@
+package com.recyclebin.service;
+
+import java.util.List;
+
+import com.recyclebin.domain.ChatRoomVO;
+import com.recyclebin.domain.ChattingVO;
+
+public interface ChattingService {
+	
+	List<ChattingVO> getMessages(Long cno);
+	
+	int insertMessage(ChattingVO vo);
+	
+	int getUnReadCount(ChattingVO vo);
+	
+	int updateCount(ChattingVO vo);
+	
+	ChattingVO getMessage(Long clno);
+}

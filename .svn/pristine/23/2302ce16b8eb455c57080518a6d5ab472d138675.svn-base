@@ -1,0 +1,164 @@
+package com.recyclebin.controller;
+
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
+
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+	"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml",
+	"file:src/main/webapp/WEB-INF/spring/security-context.xml"})
+@WebAppConfiguration
+@Log4j
+public class MemberControllerTests {
+	@Setter @Autowired
+	private WebApplicationContext ctx;
+	private MockMvc mvc;
+	
+	@Before
+	public void setup() {
+		mvc = MockMvcBuilders.webAppContextSetup(ctx).build();		
+	}
+	
+	@Test
+	public void testExists() {
+		assertNotNull(ctx);
+		assertNotNull(mvc);
+		log.info(ctx);
+		log.info(mvc);
+	}
+	
+	// 로그인 테스트
+	@Test
+	public void testLogin() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/member/login")
+				.param("username", "test3")
+				.param("password", "1234")
+				)
+				.andReturn()
+				.getModelAndView();
+		log.info(mav.getViewName());
+	}
+	
+	// 회원가입 테스트(get)
+	@Test
+	public void testJoin() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/member/join"))
+				.andReturn()
+				.getModelAndView();
+	}
+
+	// 회원가입 테스트(post)
+	@Test
+	public void testSignIn() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.post("/member/join")
+				.param("id", "apple3")
+				.param("password", "1234")
+				.param("nickname", "juice")
+				.param("name", "ju")
+				.param("resident", "860329")
+				.param("account", "66482164")
+				.param("phone", "01099846652")
+				.param("email", "jsu@gmail.com")
+				.param("zipcode", "20512")
+				.param("roadAddress", "석정로 467번길")
+				.param("address", "남동구 간석1동")
+				.param("detailAddress", "빌라 8동")
+				.param("latitude", "32.564684")
+				.param("longitude", "132.46845")
+				)
+				.andReturn()
+				.getModelAndView();
+		log.info(mav.getViewName());
+	}
+	
+	// 마이페이지 조회
+	@Test
+	public void testMypage() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/member/mypage")
+//				.param("username", "apple3")
+				)
+				.andReturn()
+				.getModelAndView();
+	}
+	
+	// 마이페이지 정보 수정
+	@Test
+	public void testMypageModify() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.post("/member/mypage")
+				.param("id", "apple3")
+				.param("password", "1234")
+				.param("nickname", "juju")
+				.param("name", "ju")
+				.param("resident", "860329")
+				.param("account", "66482164")
+				.param("phone", "01099846652")
+				.param("email", "jsu@gmail.com")
+				.param("zipcode", "20512")
+				.param("roadAddress", "석정로 467번길")
+				.param("address", "남동구 간석1동")
+				.param("detailAddress", "빌라 8동")
+				.param("latitude", "32.564684")
+				.param("longitude", "132.46845")
+				)
+				.andReturn()
+				.getModelAndView();
+	}
+	
+	// 프로필 조회
+	@Test
+	public void testProfile() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/member/profile")
+				.param("id", "apple3")
+				.param("nickname", "juju")
+				.param("address", "남동구 간석1동")
+				.param("score", "0")
+				.param("post", "0")
+				)
+				.andReturn()
+				.getModelAndView();
+	}
+	
+	// 관리자 페이지 조회
+	@Test
+	public void testAdmin() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/member/admin"))
+				.andReturn()
+				.getModelAndView();
+	}
+	
+	// 회원 등급 수정
+	@Test
+	public void testAuthModify() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.post("/member/modify")
+				.param("id", "apple3")
+				.param("auth", "ROLE_MANAGER")
+				)
+				.andReturn()
+				.getModelAndView();
+	}
+	
+	// 회원 비활성화(활동정지)
+	@Test
+	public void testMemberRemove() throws Exception {
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.post("/member/remove")
+				.param("id", "map5")
+				)
+				.andReturn()
+				.getModelAndView();
+	}
+}

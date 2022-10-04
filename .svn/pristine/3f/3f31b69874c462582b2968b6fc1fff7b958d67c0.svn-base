@@ -1,0 +1,13 @@
+package com.recyclebin.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data @AllArgsConstructor @NoArgsConstructor
+public class ImgFileVO {
+	private String uuid;
+	private String origin;
+	private String path;
+	private Long bno;
+}

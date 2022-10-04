@@ -1,0 +1,113 @@
+package com.recyclebin.mapper;
+
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.recyclebin.domain.BoardVO;
+import com.recyclebin.domain.Criteria;
+
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"file:src/main/webapp/WEB-INF/spring/root-context.xml","file:src/main/webapp/WEB-INF/spring/security-context.xml"})
+
+@Log4j
+public class BoardMapperTests {
+	
+	@Setter @Autowired
+	private BoardMapper boardMapper;
+	
+	
+	
+	@Setter @Autowired
+	private PasswordEncoder encoder;
+	
+	@Test
+	public void testExist(){
+		assertNotNull(boardMapper);
+	}
+	
+	@Test
+	public void testGetList(){
+		List<BoardVO> list = boardMapper.getList();
+		log.info(list);
+	}
+	
+	@Test
+	public void testGetListWithPaging(){
+		Criteria cri = new Criteria();
+		log.info(cri);
+		
+		List<BoardVO> result = boardMapper.getListWithPaging(cri);
+		assertNotNull(result);
+		result.forEach(log::info);
+		
+	}
+	
+	@Test
+	public void testRead(){
+		BoardVO read = boardMapper.read(4L);
+		log.info(read);
+	}
+	
+	@Test
+	public void testInsert(){
+		BoardVO boardVO = new BoardVO();
+		boardVO.setTitle("test");
+		boardVO.setContent("testInsert");
+		boardVO.setId("test5");
+		boardVO.setWriter("Ssam");
+		boardVO.setCategory(1);
+		boardVO.setPno(1L);
+		boardVO.setPrice(1000L);
+		log.info(boardVO);
+		
+		boardMapper.insert(boardVO);
+		boardMapper.getList();
+		
+	}
+	
+	@Test
+	public void testUpdate(){
+		BoardVO boardVO = new BoardVO();
+		boardVO.setTitle("updateTitle");
+		boardVO.setContent("updateContent");
+		boardVO.setBno(104L);
+		boardVO.setCategory(2);
+		boardVO.setPno(2L);
+		boardMapper.update(boardVO);
+		boardMapper.getList();
+	}
+	
+	@Test
+	public void testDelete(){
+		boardMapper.delete(4L);
+		boardMapper.getList();
+		
+	}
+	@Test
+	public void testInsertSelectKey(){
+		BoardVO boardVO = new BoardVO();
+		
+		boardVO.setTitle("테스트입니다");
+		boardVO.setContent("테스트 입니다");
+		boardVO.setId("test5");
+		boardVO.setWriter("Ssam");
+		boardVO.setCategory(1);
+		boardVO.setPno(1L);
+		boardVO.setPrice(1000L);
+		
+		log.info(boardVO);
+		boardMapper.insertSelectKey(boardVO);
+		boardMapper.getListWithPaging(new Criteria());
+	}
+}

@@ -1,0 +1,125 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>2022. 5. 12.오전 10:09:27</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+<style>
+    .map_wrap {position:relative;width:100%;height:350px;}
+    .title {font-weight:bold;display:block;}
+    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
+    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+</style>
+</head>
+<body>
+	<button id="btnAddr">주소검색</button>
+
+	<p>도로명주소 : <input type="text" id="result1"></p>
+	<p>지번주소 : <input type="text" id="result2"></p>
+	<p>우편번호 : <input type="text" id="result3"></p>
+	<p>위도 : <input type="text" id="result4"></p>
+	<p>경도 : <input type="text" id="result5"></p>
+
+	<div id="map" style="width:500px;height:350px;margin:0 auto; border:1px solid; display:none"></div> <!-- 지도틀 -->
+
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=53c384805130c9bc4f683d53b2fe930a&libraries=services"></script>
+
+<script>
+	$("#btnAddr").click(function() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            
+	            new kakao.maps.services.Geocoder().addressSearch(data.roadAddress, function(result, status){
+	            	if(status === kakao.maps.services.Status.OK) {
+	            		$("#result1").val(data.roadAddress);
+	     	            $("#result2").val(data.jibunAddress);
+	     	            $("#result3").val(data.zonecode);
+	     	           	$("#result4").val(result[0].y);	            		
+	     	           	$("#result5").val(result[0].x);	
+	     	           		     	           
+	     	          $("#map").slideDown(200, function() {
+	     	        	 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		            		mapOption = {
+		            		    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+		            		    level: 3 // 지도의 확대 레벨
+		            		};  
+		            		var map = new kakao.maps.Map(mapContainer, mapOption);
+		     	           	var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+		     	          // 결과값으로 받은 위치를 마커로 표시합니다
+		     	          var marker = new kakao.maps.Marker({
+		     	              map: map,
+		     	              position: coords
+		     	          });
+
+		     	          // 인포윈도우로 장소에 대한 설명을 표시합니다
+		     	          var infowindow = new kakao.maps.InfoWindow({
+		     	              content: '<div style="width:150px;text-align:center;padding:6px 0;">'+ data.roadAddress +'</div>'
+		     	          });
+		     	          infowindow.open(map, marker);
+
+		     	          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+		     	          map.setCenter(coords);
+
+						   var geocoder = new kakao.maps.services.Geocoder();
+						
+						   kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+								searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+									if (status === kakao.maps.services.Status.OK) {
+										var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+										detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+										
+										var content = '<div class="bAddr">' +
+														'<span class="title">법정동 주소정보</span>' + 
+														detailAddr + 
+													'</div>';
+
+										// 마커를 클릭한 위치에 표시합니다 
+										marker.setPosition(mouseEvent.latLng);
+										marker.setMap(map);
+
+										// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+										infowindow.setContent(content);
+										infowindow.open(map, marker);
+										data.roadAddress = result[0].road_address;
+											var coords = new kakao.maps.Coords(mouseEvent.latLng.La, mouseEvent.latLng.Ma);
+											if(result[0].road_address) {
+												$("#result1").val(result[0].road_address.address_name);
+												$("#result3").val(result[0].road_address.zone_no);
+												
+											} else {
+												$("#result1").val("");
+												$("#result3").val("");
+											}
+
+						     	            $("#result2").val(result[0].address.address_name);
+						     	           	$("#result4").val(coords.Ma);	            		
+						     	           	$("#result5").val(coords.La);	
+									}   
+								});
+							});
+
+							function searchAddrFromCoords(coords, callback) {
+								// 좌표로 행정동 주소 정보를 요청합니다
+								geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
+							}
+
+							function searchDetailAddrFromCoords(coords, callback) {
+								// 좌표로 법정동 상세 주소 정보를 요청합니다
+								geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+							}
+	     	          }); // 맵 관련 끝
+					   
+	            	}
+	            })
+	        }
+	    }).open();
+
+	})
+</script>
+</body>
+</html>

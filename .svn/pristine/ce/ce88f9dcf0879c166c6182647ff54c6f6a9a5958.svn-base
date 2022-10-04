@@ -1,0 +1,23 @@
+package com.recyclebin.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+
+import com.recyclebin.domain.ImgFileVO;
+
+public interface ImgFileMapper {
+	@Insert("INSERT INTO OE_IMGFILE VALUES(#{uuid},#{origin},#{path},#{bno},#{image})")
+	void insert(ImgFileVO vo);
+	
+	@Delete("DELETE OE_IMGFILE WHERE UUID =#{uuid}")
+	void delete(String uuid);
+	
+	@Delete("DELETE OE_IMGFILE WHERE bno =#{bno}")
+	void deleteAll(Long bno);
+	
+	@Select("SELECT * FROM OE_IMGFILE WHERE BNO = #{bno}")
+	List<ImgFileVO> findBy(Long bno);
+}

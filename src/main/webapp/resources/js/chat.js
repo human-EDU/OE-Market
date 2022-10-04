@@ -1,0 +1,109 @@
+/**
+ * 
+ */
+var chattingService = (function() {
+	var getList = function(cno, callback, error, before, after) {
+		var	url = "/chat/rooms/" + cno;
+		$.ajax({
+			url:url,
+			type:"get",
+			dataType:"json",
+			beforeSend : function() {
+				if(before) {
+					before();
+				}
+			},
+			success : function(result, status, xhr) {
+				if(callback) {
+					callback(result);
+				}
+				if(after) {
+					after(result);
+				}
+			},
+			error : function(xhr, status, er) {
+				if(error) error(er);
+			}
+		})
+	}
+	var getChatRooms = function(userId, callback, error, before, after) {
+		$.ajax({
+			url:"/chat/rooms",
+			type:"get",
+			dataType:"json",
+			beforeSend : function() {
+				if(before) {
+					before();
+				}
+			},
+			success : function(result, status, xhr) {
+				if(callback) {
+					callback(result);
+				}
+				if(after) {
+					after(result);
+				}
+			},
+			error : function(xhr, status, er) {
+				if(error) error(er);
+			}
+		})
+	}
+	var add = function(message, callback, error) {
+		$.ajax({
+			url:"/chat/send",
+			type:"post",
+			data:JSON.stringify(message),
+			dataType:"json",
+			contentType:"application/json; charset=utf-8",
+			success : function(result, status, xhr) {
+				if(callback) callback(result);
+			},
+			error : function(xhr, status, er) {
+				if(error) error(er);
+			}
+		})
+	}
+	var get = function(cno, clno, callback, error) {
+		var url = "/chat/rooms/" + cno + "/" + clno;
+		$.ajax({
+			url:url,
+			type:"get",
+			dataType:"json",
+			success : function(result, status, xhr) {
+				if(callback) callback(result);
+			},
+			error : function(xhr, status, er) {
+				if(error) error(er);
+			}
+		})
+	}
+	var check = function(chatRoom, callback, error) {
+		$.ajax({
+			url: "/chat/check",
+			type: "post",
+			data:JSON.stringify(chatRoom),
+			dataType:"json",
+			contentType:"application/json; charset=utf-8",
+			success : function(result, status, xhr) {
+				if(callback) callback(result);
+			},
+			error : function(xhr, status, er) {
+				if(error) error(er);
+			}
+		})
+	}
+	function displayTime(timeValue) {
+		moment.locale('ko');
+		return moment(timeValue).fromNow();
+	}		
+	return {
+		getList : getList,
+		getChatRooms : getChatRooms,
+		displayTime : displayTime,
+		add : add,
+		get : get,
+		check : check
+	};
+
+})();

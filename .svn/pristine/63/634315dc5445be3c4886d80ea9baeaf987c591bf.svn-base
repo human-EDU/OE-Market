@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.recyclebin.mapper.MemberMapper">
+
+	<insert id="insertMember">
+	INSERT INTO OE_MEMBER_INFO (
+	ID, PASSWORD, NICKNAME, NAME, 
+	RESIDENT, ACCOUNT, PHONE, EMAIL, 
+	ZIPCODE, ROADADDRESS, ADDRESS, DETAILADDRESS, LATITUDE, LONGITUDE) 
+	VALUES (#{id}, #{password}, #{nickname}, #{name},
+	 #{resident}, #{account}, #{phone}, #{email}, 
+	 #{zipcode}, #{roadAddress}, #{address}, #{detailAddress}, #{latitude}, #{longitude})	
+	</insert>
+	
+	<insert id="insertAuth">
+		INSERT INTO OE_MEMBER_AUTH (ID, AUTH) 
+		VALUES (#{id}, #{auth})
+	</insert>
+	
+	<resultMap type="member" id="memberMap">
+		<id property="id" column="id"/>
+		
+		<result property="zipcode" column="zipcode"/>		
+		<result property="roadAddress" column="roadAddress"/>
+		<result property="address" column="address"/>
+		<result property="detailAddress" column="detailAddress"/>
+		<result property="latitude" column="latitude"/>
+		<result property="longitude" column="longitude"/>
+
+		<result property="account" column="account"/>
+		<result property="name" column="name"/>
+		<result property="resident" column="resident"/>				
+		<result property="phone" column="phone"/>			
+		<result property="nickname" column="nickname"/>				
+		<result property="id" column="id"/>
+		<result property="email" column="email"/>
+		<result property="password" column="password"/>
+		<result property="point" column="point"/>
+		<result property="accountCheck" column="accountcheck"/>
+		<result property="phoneCheck" column="phonecheck"/>
+		<result property="emailCheck" column="emailcheck"/>
+		<result property="enabled" column="enabled"/>
+		<collection property="auths" resultMap="authMap"/>
+	</resultMap>
+	
+	<resultMap type="auth" id="authMap">
+		<result property="id" column="id"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+	
+	<select id="read" resultMap="memberMap" >
+		SELECT *
+		FROM OE_MEMBER_INFO
+		JOIN OE_MEMBER_AUTH
+		USING(ID)
+		WHERE ID = #{id}
+	</select>
+	
+	<update id="updateMember">
+<!-- 		UPDATE OE_MEMBER_INFO SET
+			NICKNAME = #{nickname},
+			PASSWORD = #{password},
+			SI = #{si},
+			SGG = #{sgg}
+		WHERE ID = #{id} -->
+		UPDATE OE_MEMBER_INFO SET
+			NICKNAME = #{nickname}
+			<if test="password != null and !password.equals('')">
+			, PASSWORD = #{password}
+			</if>
+		WHERE ID = #{id}
+	</update>
+	
+	<update id="updateAddress">
+		UPDATE OE_MEMBER_INFO SET
+			ZIPCODE = #{zipcode},
+			ROADADDRESS = #{roadAddress},
+			ADDRESS = #{address},
+			DETAILADDRESS = #{detailAddress},
+			LATITUDE = #{latitude},
+			LONGITUDE = #{longitude}
+		WHERE ID = #{id}
+	</update>
+
+	<update id="updateAuth">
+		UPDATE OE_MEMBER_AUTH SET
+			AUTH = #{auth}
+		WHERE ID = #{id}
+	</update>
+	
+	<delete id="deleteMember">
+		DELETE FROM OE_MEMBER_INFO
+		WHERE ID = #{id}		
+	</delete>
+
+	<delete id="deleteAuth">
+		DELETE FROM OE_MEMBER_AUTH
+		WHERE ID = #{id}		
+	</delete>
+	
+	<update id="blackList">
+		UPDATE OE_MEMBER_INFO SET
+			ENABLED = '0'
+		WHERE ID = #{id}
+	</update>
+	
+	<select id="readScore" resultType="score">
+		SELECT * FROM OE_MEMBER_SCORE
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="getMemberList" resultType="member">
+		SELECT 
+		ID, NICKNAME, POINT, NAME, RESIDENT, SI, SGG, PHONE, ACCOUNT, EMAIL 
+		FROM OE_MEMBER_INFO
+	</select>
+	
+	<select id="getAuthList" resultType="auth">
+		SELECT * FROM OE_MEMBER_AUTH
+	</select>
+	
+	
+	<insert id="insertBookmark">
+		INSERT INTO OE_MEMBER_BOOKMARK (ID, BOOKMARK1, BOOKMARK2, BOOKMARK3) 
+		VALUES (#{id}, #{bookmark1}, #{bookmark2}, #{bookmark3}) 
+	</insert>
+	
+	<update id="updateBookmark">
+		UPDATE OE_MEMBER_BOOKMARK SET
+			BOOKMARK1 = #{bookmark1},
+			BOOKMARK2 = #{bookmark2},
+			BOOKMARK3 = #{bookmark3}
+		WHERE ID = #{id}			
+	</update>
+	
+	<delete id="deleteBookmark">
+		DELETE FROM OE_MEMBER_BOOKMARK
+		WHERE ID = #{id}
+	</delete>
+	
+	<select id="readBookmark" resultType="bookmark">
+		SELECT * FROM OE_MEMBER_BOOKMARK
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="SearchId" resultType="member">
+		SELECT ID 
+		FROM OE_MEMBER_INFO 
+		WHERE EMAIL = #{email}
+	</select>
+
+<!-- 	<select id="SearchPassword" resultType="member">
+		SELECT PASSWORD 
+		FROM OE_MEMBER_INFO 
+		WHERE EMAIL = #{email}
+	</select>
+	
+	<select id="CountDeal" resultType="long">
+		
+	</select> -->
+	
+	<select id="CountPost" resultType="integer">
+		SELECT COUNT(BNO) 
+		FROM OE_MEMBER_INFO 
+		JOIN OE_BOARD
+		USING(ID)
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="CountScore" resultType="integer">
+		SELECT AVG(SCORE) SCORE
+		FROM OE_MEMBER_SCORE 
+		WHERE ID = #{id}
+	</select>
+	
+</mapper>

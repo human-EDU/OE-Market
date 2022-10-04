@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.recyclebin.mapper.ImgFileMapper">
+	<insert id="insert">
+		INSERT INTO OE_IMGFILE
+		VALUES(#{uuid},#{origin},#{path},#{bno},#{image})
+	</insert>
+	
+	<delete id="delete">
+		DELETE OE_IMGFILE WHERE UUID =#{uuid}
+	</delete>
+	
+	<delete id="deleteAll" >
+		DELETE OE_IMGFILE WHERE bno =#{bno}
+	</delete>
+	
+	<select id="findBy" resultType="img">
+		SELECT * FROM OE_IMGFILE WHERE BNO = #{bno}
+	</select>
+</mapper>

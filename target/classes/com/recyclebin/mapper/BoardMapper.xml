@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.recyclebin.mapper.BoardMapper">
+
+<select id="OE_DISTANCE2" resultType="map">
+	
+</select>
+
+<select id="getList" resultType="board">
+	<![CDATA[
+		SELECT A.*, NVL(OE_DISTANCE2(#{id}, ID),0) DISTANCE FROM OE_BOARD A WHERE BNO > 0
+		ORDER BY DISTANCE
+	 ]]>
+</select>
+
+<select id="findby" resultType="board">
+	SELECT * FROM OE_BOARD WHERE CATEGORY = #{category}
+
+</select>
+
+<select id="getPrice" resultType="Long">
+	SELECT PRICE FROM OE_BOARD WHERE BNO = #{bno}
+
+</select>
+
+<select id="getListWithPaging" resultType="board">
+		SELECT
+		    *
+		FROM (
+		    SELECT 
+		        /*+ INDEX_DESC(OE_BOARD PK_BOARD) */
+		        ROWNUM RN,
+		        BNO,
+		        TITLE,
+		        CONTENT,
+		        ID,
+		        WRITER,
+		        CATEGORY,
+		        REGDATE,
+		        TRANSCOM,
+		        PNO,
+		        PRICE
+		    FROM
+		        OE_BOARD
+		    WHERE 
+		<![CDATA[
+		    BNO < #{cri.lastBno}
+		) 
+		WHERE RN <= #{cri.amount}
+	 	]]>
+</select>
+
+<select id="read" resultType="board">
+	SELECT A.* ,
+	<![CDATA[
+	CASE WHEN NVL(OE_DISTANCE2(#{id}, ID),0) < 1 THEN TRUNC(NVL(OE_DISTANCE2(#{id}, ID),0)*1000) ||'m'
+    ELSE TRUNC(NVL(OE_DISTANCE2(#{id}, ID),0),1) ||'km'
+    ]]>
+    END DISTANCE
+	FROM OE_BOARD A WHERE BNO = #{bno}
+</select>
+
+<insert id="insert">
+	INSERT INTO OE_BOARD(BNO,TITLE,CONTENT,ID,WRITER,CATEGORY,PNO,PRICE)
+	VALUES (SEQ_BNO.NEXTVAL, #{title}, #{content},#{id},#{writer},#{category},#{pno},#{price})
+</insert>
+
+<insert id="insertSelectKey">
+	<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+	SELECT SEQ_BNO.NEXTVAL FROM DUAL
+	</selectKey>
+	INSERT INTO OE_BOARD(BNO,TITLE,CONTENT,ID,WRITER,CATEGORY,PNO,PRICE)
+	VALUES (#{bno}, #{title}, #{content}, #{id}, #{writer}, #{category}, #{pno},#{price})
+</insert>
+
+<update id="update">
+	UPDATE OE_BOARD SET 
+		TITLE = #{title},
+		CONTENT = #{content},
+		CATEGORY = #{category},
+		PNO = #{pno},
+		PRICE = #{price},
+		REGDATE = SYSDATE
+	WHERE BNO = #{bno}
+</update>
+
+<delete id="delete">
+	DELETE OE_BOARD WHERE BNO = #{bno}
+</delete>
+
+
+</mapper>
+

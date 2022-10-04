@@ -1,0 +1,16 @@
+package com.recyclebin.service;
+
+import java.util.List;
+
+import com.recyclebin.domain.ChatRoomVO;
+
+public interface ChatRoomService {
+	ChatRoomVO selectChatRoom(Long cno);
+	
+	int createChatRoom(ChatRoomVO vo);
+	
+	List<ChatRoomVO> searchChatRooms(ChatRoomVO vo);
+	
+	List<ChatRoomVO> getChatRooms(String id);
+	
+}

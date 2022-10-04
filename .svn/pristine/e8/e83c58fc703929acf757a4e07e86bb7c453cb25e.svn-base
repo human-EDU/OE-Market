@@ -1,0 +1,21 @@
+package com.recyclebin.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.recyclebin.domain.ChatRoomVO;
+
+public interface ChatRoomMapper {
+	
+	int createChatRoom(ChatRoomVO vo);
+	
+	List<ChatRoomVO> getChatRooms(String id);
+	
+	ChatRoomVO selectChatRoom(Long cno);
+	
+	List<ChatRoomVO> searchChatRooms(ChatRoomVO vo);
+	
+	int updateUnreadCount();
+}
