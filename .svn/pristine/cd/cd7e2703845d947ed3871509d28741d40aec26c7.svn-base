@@ -1,0 +1,38 @@
+package com.recyclebin.domain;
+
+import java.util.List;
+import org.apache.ibatis.type.Alias;
+import lombok.Data;
+
+@Data @Alias("member")
+public class MemberVO {
+	// 주소
+	private String zipcode; // 우편번호
+	private String roadAddress; // 도로명주소
+	private String address;	// 지번주소
+	private String detailAddress; // 상세주소
+	private String latitude; // 위도
+	private String longitude; // 경도
+	
+	private String account;
+
+	private String name;
+	private String resident;
+	private String phone;
+	
+	private String nickname;
+	private String id;
+	private String email;
+	private String password;
+	
+	private Long point;
+
+	// 인증
+	private Long accountCheck;
+	private Long phoneCheck;
+	private Long emailCheck;
+		
+	private boolean enabled;	
+	private List<AuthVO> auths;
+	
+}

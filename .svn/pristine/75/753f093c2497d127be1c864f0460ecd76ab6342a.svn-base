@@ -1,0 +1,83 @@
+package com.recyclebin.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.recyclebin.domain.TradeVO;
+import com.recyclebin.service.TradeService;
+
+import lombok.AllArgsConstructor;
+
+@RestController
+@RequestMapping("trade")
+@AllArgsConstructor
+public class TradeController {
+	private TradeService tradeService;
+	
+	/**
+	 * Cno로 Trade찾기
+	 * @param cno
+	 * @return
+	 */
+	@GetMapping("{cno}")
+	public TradeVO findByCno(@PathVariable Long cno) {
+		return tradeService.findByCno(cno);
+	}
+	
+	/**
+	 * 구매자 입금 기능
+	 * @param trno
+	 * @param amount
+	 * @return
+	 */
+	@PostMapping("{trno}")
+	public int setAmount(@PathVariable Long trno, @RequestBody Long amount) {
+		return tradeService.updateAmount(trno, amount) > 0 ? 1 : 0;
+	}
+	
+	/**
+	 * 구매자 상태 업데이트
+	 * @param trno
+	 * @return
+	 */
+	@GetMapping("{trno}/updateBuyerStatus")
+	public TradeVO updateBuyerStatus(@PathVariable Long trno) {
+		return tradeService.updateBuyerStatus(trno);
+	}
+	
+	/**
+	 * 판매자 상태 업데이트
+	 * @param trno
+	 * @return
+	 */
+	@GetMapping("{trno}/updateSellerStatus")
+	public TradeVO updateSellerStatus(@PathVariable Long trno) {
+		return tradeService.updateSellerStatus(trno);
+	}
+	
+	/**
+	 * 거래완료
+	 * @param trno
+	 * @return
+	 */
+	@GetMapping("{trno}/updateComplete")
+	public TradeVO updateComplete(@PathVariable Long trno) {
+		return tradeService.updateComplete(trno);
+	}
+	
+	/**
+	 * 거래 취소
+	 * @param trno
+	 * @return
+	 */
+	@GetMapping("{trno}/cancelTrade")
+	public int cancelTrade(@PathVariable Long trno) {
+		return tradeService.cancelTrade(trno);
+	}
+	
+}

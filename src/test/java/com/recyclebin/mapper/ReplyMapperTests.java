@@ -1,0 +1,70 @@
+package com.recyclebin.mapper;
+
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.recyclebin.domain.Criteria;
+import com.recyclebin.domain.ReplyVO;
+
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"file:src/main/webapp/WEB-INF/spring/root-context.xml","file:src/main/webapp/WEB-INF/spring/security-context.xml"})
+@Log4j
+public class ReplyMapperTests {
+	@Setter @Autowired
+	private ReplyMapper mapper;
+	
+	@Setter @Autowired
+	private PasswordEncoder encoder;
+	
+	@Test
+	public void testExist(){
+		assertNotNull(mapper);
+	}
+	
+	@Test
+	public void testInsert(){
+		ReplyVO vo = new ReplyVO();
+		vo.setBno(604L);
+		vo.setReply("mapperReply");
+		vo.setWriter("kyoungbow");
+		mapper.insert(vo);
+			
+	}
+	
+	@Test
+	public void testRead(){
+		ReplyVO vo = mapper.read(231L);
+		log.info(vo);
+	}
+	
+	@Test
+	public void testUpdate(){
+		ReplyVO vo = mapper.read(231L);
+		vo.setReply("mapper Modify");
+		mapper.update(vo);
+		log.info(vo);
+	}
+	
+	@Test
+	public void testDelete(){
+		mapper.delete(231L);
+		
+	}
+	
+	@Test
+	public void testList(){
+		Criteria cri = new Criteria();
+		cri.setLastRno(147L);
+		mapper.getListWithPaging(235L, cri);
+		log.info(cri);
+	}
+}

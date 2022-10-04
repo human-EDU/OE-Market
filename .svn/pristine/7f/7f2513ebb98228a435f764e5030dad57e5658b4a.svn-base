@@ -1,0 +1,249 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://www.springframework.org/security/tags"  prefix="sec"%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.bundle.min.js" integrity="sha512-sH8JPhKJUeA9PWk3eOcOl8U+lfZTgtBXD41q6cO/slwxGHCxKcW45K4oPCUhHG7NMB4mbKEddVmPuTXtpbCbFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<jsp:include page="../common/head.jsp"/>
+<!-- Start Header Area -->
+    <header class="header navbar-area">
+        <!-- Start Topbar -->
+        <div class="topbar">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <div class="top-left">
+                        <a class="navbar-brand" href="/">
+                            <h3 style="color: white">오-이 마켓</h3>
+                        </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-12" >
+                        <div class="top-end ">
+	                        <div class="main-menu-search user col-13">
+							</div>
+						<div class="middle-right-area user">
+                            <div class="navbar-cart">
+                                <div class="cart-items">
+                                    <a href="/chat/rooms" class="main-btn chatRooms">
+                                        <i class="lni lni-cart"></i>
+                                        <span class="total-items">2</span>
+                                    </a>
+                                    <!-- Shopping Item -->
+                                    <div class="shopping-item">
+                                        <ul class="shopping-list room">
+                                        
+                                        </ul>
+                                    	<div class="chat" style="max-height: 500px; overflow: auto; color: #222">
+		
+										</div>
+										<div class="chatRoom">
+										
+										</div>	
+                                        <div class="bottom">
+                                            <div class="total">
+                                                <span>Total</span>
+                                                <span class="total-amount">$134.00</span>
+                                            </div>
+                                            <div class="button">
+                                                <a href="checkout.html" class="btn animate">Checkout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/ End Shopping Item -->
+                                </div>
+                            </div>
+                        </div>
+                            <div class="user">
+                                <i class="lni lni-user"></i>                       
+                            </div>
+
+                            <sec:authorize access="isAnonymous()">
+                                <ul class="user-login">
+                                    <li>
+                                        <a href="/member/login">Login</a>
+                                    </li>
+                                    <li>
+                                        <a href="/member/join">Join</a>
+                                    </li>
+                                </ul>
+                            </sec:authorize>
+
+                            <sec:authorize access="isAuthenticated()">
+                                <ul class="user-login">
+                                    <li>
+                                        <a href="/member/profile">profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="/member/mypage">mypage</a>
+                                    </li>
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                        <li>
+                                            <a href="/member/admin">admin</a>
+                                        </li>
+                                    </sec:authorize>
+                                    <li>
+                                        <form action="/logout" method="post" onsubmit="return confirm('로그아웃하시겠습니까?')">
+                                            <button>Logout</button>
+                                        <sec:csrfInput/>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </sec:authorize>
+
+                            
+                            <!-- Start Mega Category Menu -->
+                        <div class="mega-category-menu user">
+                            <span class="cat-button user"><i class="lni lni-menu"></i></span>
+                            <ul class="sub-category ">
+	                            <ul class="inner-sub-category">
+	                                <li><a href="/board/list?category=1">판매 게시판</a></li>
+	                                <li><a href="/board/list?category=2">구매 게시판</a></li>
+	                                <li><a href="/board/list?category=3">자유 게시판</a></li>
+	                                <li><a href="/board/list?category=4">문의 게시판</a></li>
+	                            </ul>
+                            </ul>
+                        </div>
+                        <!-- End Mega Category Menu -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- End Topbar -->
+        <!-- Start Header Middle -->
+        <div class="header-middle">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-5 col-md-7 d-xs-none float- end">
+                        <!-- Start Main Menu Search -->
+                        <div class="main-menu-search">
+                            <!-- navbar search start -->
+                            <div class="navbar-search search-style-5">
+                                <div class="search-select">
+                                    <div class="select-position">
+                                        <select id="select1">
+                                            <option selected>All</option>
+                                            <option value="1">option 01</option>
+                                            <option value="2">option 02</option>
+                                            <option value="3">option 03</option>
+                                            <option value="4">option 04</option>
+                                            <option value="5">option 05</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="search-input">
+                                    <input type="text" placeholder="Search">
+                                </div>
+                                <div class="search-btn">
+                                    <button><i class="lni lni-search-alt"></i></button>
+                                </div>
+                            </div>
+                            <!-- navbar search Ends -->
+                        </div>
+                        <!-- End Main Menu Search -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Header Middle -->
+        <!-- End Header Middle -->
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal.username" var="userId"/>
+	</sec:authorize>
+	<script src="/resources/js/chat.js"></script>
+	<script>
+	var userId = '${userId}';
+	var cno = 0;
+	var str2 = '' 
+		str2 += '<textarea rows="3" cols="30"></textarea>'
+		str2 += '<button>전송</button>'
+	var interver;
+	$(function() {
+		$(".cart-items").click(function() {
+			$(".shopping-item").css("visibility", "visible");
+		})
+		$(".chatRooms").click(function() {
+			event.preventDefault();
+			
+		})
+		$(".chatRooms").mouseover(function() {
+			event.preventDefault();
+			$(".shopping-item").show();
+			if(userId) {
+				chattingService.getChatRooms(userId, function(result) {
+					var str = '';
+					for(var i in result) {
+						console.log(str);
+						console.log(result[i]);
+						str += getChatRoomsStr(result[i]);
+					}
+					$(".room").html(str);
+				})
+			}
+		})
+		function getMessageStr(message) {
+			var str = "";
+			str += '<div id="cno" data-cno="' + message.cno + '">';
+			str += '	<strong>' + message.userId + '</strong>';
+			if(message.userId == userId) {
+				str += '<p style="color: blue">' + message.message + '</p>';
+			} else {
+				str += '<p>' + message.message + '</p>';
+			}
+			str += '	<small>' + chattingService.displayTime(message.regDate) + '</small>';
+			str += '</div>';
+			str += '<hr>';
+			return str;
+		}
+		function getChatRoomsStr(chatRooms) {
+			var str = "";
+			str += '<li>';
+			str += '	<a data-cno="' +chatRooms.cno + '" href="rooms/' + chatRooms.cno + '">' + chatRooms.cno + ' || ' + chatRooms.masterId + ' || ' + chatRooms.unreadCount + ' </a>';
+			str += '</li>';
+			str += '<hr>';
+			return str;
+		}
+		
+		var j = 1;
+		// 채팅창 활성화
+		$(document).on("click", ".room a", function() {
+			clearInterval(interver);
+			cno = $(this).data("cno");
+			console.log(cno);
+			event.preventDefault();
+			interver = setInterval(function() {
+				chattingService.getList(cno, function(result) {
+					console.log(result);
+					var str = '';
+					for(var i in result) {
+						console.log(result[i].userId)
+						str += getMessageStr(result[i]);
+					}
+					$(".chat").html(str);
+				})				
+			}, 1000);
+            $(".chat").scrollTop($(".chat")[0].scrollHeight);
+			$(".chatRoom").html(str2);
+		})
+		
+		// clearInterval
+		$(document).on("mouseout", ".shopping-item", function() {
+			clearInterval(interver);
+		})
+		
+		// 채팅 전송
+		$(document).on("click", ".chatRoom button", function() {
+			console.log(cno);
+			var message = {cno : cno, userId : userId, message : $(".chatRoom textarea").val()}
+			chattingService.add(message, function(result) {
+				chattingService.get(cno, result, function(result) {
+					$(".chat").append(getMessageStr(result));
+				})
+			})
+			$(".chatRoom textarea").val('');
+		})
+	})
+	</script>
+    </header>
+    <!-- End Header Area -->

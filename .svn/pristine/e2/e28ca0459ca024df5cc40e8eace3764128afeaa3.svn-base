@@ -1,0 +1,68 @@
+package com.recyclebin.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.recyclebin.domain.BoardVO;
+import com.recyclebin.domain.Criteria;
+import com.recyclebin.domain.ImgFileVO;
+import com.recyclebin.mapper.BoardMapper;
+import com.recyclebin.mapper.ImgFileMapper;
+
+import lombok.AllArgsConstructor;
+
+@Service @AllArgsConstructor
+
+public class BoardServiceImpl implements BoardService{
+	private BoardMapper boardMapper;
+	private ImgFileMapper fileMapper;
+	
+	@Override
+	public int register(BoardVO boardVO) {
+		// TODO Auto-generated method stub
+		return boardMapper.insertSelectKey(boardVO);
+	}
+
+	@Override
+	public BoardVO get(Long bno) {
+		// TODO Auto-generated method stub
+		return boardMapper.read(bno);
+	}
+
+	@Override
+	public boolean modify(BoardVO boardVO) {
+		// TODO Auto-generated method stub
+		return boardMapper.update(boardVO) > 0;
+	}
+
+	@Override
+	public boolean remove(Long bno) {
+		// TODO Auto-generated method stub
+		return boardMapper.delete(bno) > 0;
+	}
+
+	@Override
+	public List<BoardVO> getList(Criteria cri) {
+		
+		List<BoardVO> list = boardMapper.getListWithPaging(cri);
+		list.forEach(board -> {
+			board.setAttachs(fileMapper.findBy(board.getBno()));
+		});
+		return list;
+	}
+
+	@Override
+	public int getTotalCount(Criteria cri) {
+		// TODO Auto-generated method stub
+		return boardMapper.getTotalCount(cri);
+	}
+
+	@Override
+	public List<ImgFileVO> getAttachs(Long bno) {
+		// TODO Auto-generated method stub
+		return fileMapper.findBy(bno);
+	}
+	
+	
+}

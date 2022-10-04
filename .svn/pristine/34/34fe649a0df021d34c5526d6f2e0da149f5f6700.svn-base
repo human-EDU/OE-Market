@@ -1,0 +1,43 @@
+package com.recyclebin.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data @NoArgsConstructor @AllArgsConstructor
+public class Criteria {
+	private int amount = 9;
+//	private String type; // T C W
+	private int category;
+//	private String keyword;
+	private Long lastBno = 0L;
+	private Long lastRno = 0L;
+//	{
+//		type = typeArr == null ? null : String.join("", typeArr); 
+//		
+//	}
+	
+	
+//	public String getParams(){
+//		return UriComponentsBuilder.fromPath("")
+//				.queryParam("pageNum", pageNum)
+//				.queryParam("amount", amount)
+//				.queryParam("type", type)
+//				.queryParam("keyword", keyword)
+//				.toUriString();
+//	}
+//	public String getParamsWithoutPageNum(){
+//		return UriComponentsBuilder.fromPath("")
+//				.queryParam("amount", amount)
+//				.queryParam("type", type)
+//				.queryParam("keyword", keyword)
+//				.toUriString();
+//	}
+//	public String[] getTypeArr(){
+//		return type == null ? new String[] {} : type.split("");
+//	}
+	
+//	public String getType(){
+//		return typeArr == null ? null : String.join("", typeArr);
+//	}
+}

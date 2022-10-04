@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.recyclebin.mapper.ChatRoomMapper">
+	<resultMap type="chatRoom" id="chatRoomMap">
+		<id property="cno" column="cno"/>
+		<result property="bno" column="bno"/>
+		<result property="userId" column="userId"/>
+		<result property="masterId" column="masterId"/>
+	</resultMap>
+	
+	<insert id="createChatRoom">
+		INSERT INTO OE_CHATROOM VALUES(SEQ_CNO.NEXTVAL, #{bno}, #{userId}, #{masterId}, DEFAULT)
+	</insert>
+	
+	<select id="selectChatRoom" resultMap="chatRoomMap">
+		SELECT * FROM OE_CHATROOM WHERE CNO = #{cno}
+	</select>
+	
+	<update id="updateUnreadCount">
+		UPDATE OE_CHATROOM
+        SET UNREADCOUNT = (
+        	SELECT COUNT(*) FROM OE_CHATTING
+         	WHERE CNO = OE_CHATROOM.CNO
+         	AND USERID != OE_CHATROOM.USERID
+         	AND UNREADCOUNT = 1
+         )
+	</update>
+	
+	<select id="getChatRooms" resultType="chatRoom">
+		SELECT * FROM OE_CHATROOM
+		WHERE USERID = #{userId} OR MASTERID = #{userId}
+	</select>
+	
+	<select id="searchChatRooms" resultMap="chatRoomMap">
+		SELECT * FROM OE_CHATROOM
+		WHERE USERID = #{userId} AND MASTERID = #{masterId}
+	</select>
+</mapper>

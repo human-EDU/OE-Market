@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.recyclebin.mapper.TradeMapper">
+	<select id="findByCno" resultType="trade">
+		SELECT * FROM OE_TRADE WHERE CNO = #{cno}
+	</select>
+	
+	<select id="findByTrno" resultType="trade">
+		SELECT * FROM OE_TRADE WHERE TRNO = #{trno}
+	</select>
+	<insert id="createTrade">
+		INSERT INTO OE_TRADE(TRNO, BUYERID, SELLERID, BUYERPOINT, CNO, PRICE)
+		 VALUES (SEQ_TRNO.NEXTVAL, #{buyerId}, #{sellerId}, #{buyerPoint}, #{cno}, #{price})
+	</insert>
+	<update id="updateBuyerStatus">
+		UPDATE OE_TRADE
+        SET BUYERSTATUS = 1
+        WHERE TRNO = #{trno}
+	</update>
+	<update id="updateSellerStatus">
+		UPDATE OE_TRADE
+        SET SELLERSTATUS = 1
+        WHERE TRNO = #{trno}
+	</update>
+	<update id="updateComplete">
+		UPDATE OE_TRADE
+        SET COMPLETE = 1
+        WHERE SELLERSTATUS = 1 AND BUYERSTATUS = 1 AND TRNO = #{trno}
+	</update>
+	
+	<update id="updateBoardTranscom">
+		UPDATE OE_BOARD
+        SET TRANSCOM = 1
+        WHERE BNO = #{bno}
+	</update>
+	
+	<update id="updateMemberPoint">
+		UPDATE OE_MEMBER_INFO
+        SET POINT = #{point}
+        WHERE ID = #{id}
+	</update>
+	
+	<update id="updateCompleteDeal">
+		UPDATE OE_MEMBER_INFO
+        SET COMPLETEDEAL = COMPLETEDEAL + 1
+        WHERE ID = #{id}
+	</update>
+	
+	
+	<update id="updateAmount">
+		UPDATE OE_TRADE
+        SET AMOUNT = #{amount},
+        BUYERPOINT = BUYERPOINT - #{amount}
+        <![CDATA[
+	        WHERE TRNO = #{trno} AND #{amount} <= BUYERPOINT
+	 	]]> 
+	</update>
+	
+	<update id="cancelTrade">
+		UPDATE OE_TRADE
+		SET BUYERPOINT = BUYERPOINT + AMOUNT,
+		AMOUNT = 0,
+		BUYERSTATUS = 0
+		WHERE TRNO = #{trno}
+	</update>
+</mapper>

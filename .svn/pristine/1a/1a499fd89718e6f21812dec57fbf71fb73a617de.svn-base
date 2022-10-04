@@ -1,0 +1,26 @@
+package com.recyclebin.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.recyclebin.domain.BoardVO;
+import com.recyclebin.domain.Criteria;
+
+public interface BoardMapper {
+	// select
+	public List<BoardVO> getList();
+	
+	public BoardVO read(Long bno);
+	
+	public List<BoardVO> getListWithPaging(@Param("cri") Criteria cri);
+	
+	//insert
+	public int insert(BoardVO boardVO);
+	public int insertSelectKey(BoardVO boardVO);
+	public int update(BoardVO boardVO);
+	public int delete(Long bno);
+	
+	public int getTotalCount(Criteria cri);
+	
+}

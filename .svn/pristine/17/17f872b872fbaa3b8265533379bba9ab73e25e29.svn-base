@@ -1,0 +1,18 @@
+package com.recyclebin.domain;
+
+import java.util.Date;
+
+import org.apache.ibatis.type.Alias;
+
+import lombok.Data;
+
+@Data @Alias("chatting")
+public class ChattingVO {
+	private Long clno;
+	private Long cno;
+	private String userId;
+	private String message;
+	private boolean unReadCount;
+	private Date regDate;
+//	private int sessionCount;
+}

@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+<html class="no-js" lang="ko">
+
+<head>
+    <jsp:include page="../common/head.jsp"/>
+</head>
+
+<body>
+    <jsp:include page="../common/nav.jsp"/>
+
+    <!-- Start Blog Singel Area -->
+    <section class="section blog-single">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1 col-md-12 col-12">
+                    <div class="single-inner">
+                        <div class="post-details">
+                            <div class="main-content-head">
+                                <div class="post-thumbnils">
+                                    <img src="https://via.placeholder.com/850x460" alt="#">
+                                </div>
+                                <div class="meta-information">
+                                    <h2 class="post-title">
+                                        <a href="blog-single.html">${board.title}</a>
+                                    </h2>
+                                    <!-- End Meta Info -->
+                                    <ul class="meta-info">
+                                        <li>
+                                            <a href="javascript:void(0)"> <i class="lni lni-user"></i> 
+                                               ${board.writer}</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)"><i class="lni lni-calendar"></i> ${board.regDate}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)"><i class="lni lni-tag"></i> ${board.price}원</a>
+                                        </li>
+                                        <li>
+                                            <i class="lni lni-timer"><input type="file" multiple></input></i> 
+                                        </li>
+                                    </ul>
+                                    <!-- End Meta Info -->
+                                </div>
+                                <div class="detail-inner">
+                                    <p>${board.content}</p>
+                                </div>
+                                <a class="btn btn-secondary btn-sm" href="modify${cri.params}?bno=${board.bno}&category=${board.category}">수정</a>
+                            </div>
+                            <!-- Comments -->
+                            <div class="post-comments">
+                                <h3 class="comment-title"><span>Replies</span></h3>
+                                <ul class="comments-list">
+                                    <li>
+                                        <div class="comment-img">
+                                            <img src="https://via.placeholder.com/150x150" alt="img">
+                                        </div>
+                                        <div class="comment-desc">
+                                            <div class="desc-top">
+                                                <h6>Arista Williamson</h6>
+                                                <span class="date">19th May 2023</span>
+                                                <a href="javascript:void(0)" class="reply-link"><i
+                                                        class="lni lni-reply"></i>글쓰기</a>
+                                            </div>
+                                            <p>
+                                                Donec aliquam ex ut odio dictum, ut consequat leo interdum. Aenean nunc
+                                                ipsum, blandit eu enim sed, facilisis convallis orci. Etiam commodo
+                                                lectus
+                                                quis vulputate tincidunt. Mauris tristique velit eu magna maximus
+                                                condimentum.
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Blog Singel Area -->
+
+
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+
+    <jsp:include page="../common/footer.jsp"/>
+</body>
+
+</html>

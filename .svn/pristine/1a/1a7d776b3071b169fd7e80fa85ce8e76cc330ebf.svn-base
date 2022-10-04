@@ -1,0 +1,18 @@
+package com.recyclebin.mapper;
+
+import java.util.List;
+
+import com.recyclebin.domain.ChattingVO;
+
+public interface ChattingMapper {
+	
+	List<ChattingVO> getMessages(Long cno);
+	
+	int insertMessage(ChattingVO vo);
+	
+	int getUnReadCount(ChattingVO vo);
+	
+	int updateCount(ChattingVO vo);
+	
+	ChattingVO getMessage(Long clno);
+}
